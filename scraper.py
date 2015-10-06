@@ -9,15 +9,17 @@ import urllib
 
 extractedOn = datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')
 
-def parse_page(state="vic", area="inner-east", region="melbourne-region", suburb="carnegie", postcode="3162", page=1):
+def parse_page(page):
     # Read in a page
-    url_root = "http://www.domain.com.au/search/buy/state/%s/area/%s/region/%s/suburb/%s/?" % \
-        (state, area, region, suburb)
+    url_root = "http://www.domain.com.au/search/buy/state/tas/region/tasmania/?"
 
     #/?ssubs=1&searchterm=caulfield%2c+vic%2c+3162&page=1
     html_string = scraperwiki.scrape(url_root + urllib.urlencode({
+        "bedrooms": "1,2,3,4,>5",
+        "to": "200000",
+        "areafrom": "20000",
         "ssubs": "1",
-        "searchterm": "%s,%s,%s" % (suburb, state, postcode),
+        "searchterm": "Tasmania, Tas",
         "page": page
     }))
 
@@ -60,15 +62,5 @@ def parse_page(state="vic", area="inner-east", region="melbourne-region", suburb
                                     "extracted_on": extractedOn,
                                 })
 
-
-dictReader = csv.DictReader(open('suburbs.csv', 'rb'))
-
-for line in dictReader:
-    for page_no in range(1,int(line["pages"])):
-        parse_page(
-            state=line["state"],
-            area=line["area"],
-            region=line["region"],
-            suburb=line["suburb"],
-            postcode=line["postcode"],
-            page=page_no)
+for page_no in range(1,3):
+    parse_page(page_no)
