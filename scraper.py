@@ -25,7 +25,7 @@ def parse_page(page):
 
     # Find something on the page using css selectors
     root = html.fromstring(html_string)
-    for elem in root.xpath('//a[@class="link-block"]'):
+    for elem in root.xpath('//a[@class="link-block cfix"]'):
 
         item = {
             "link": "",
